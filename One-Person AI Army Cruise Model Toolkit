@@ -1,0 +1,319 @@
+One-Person AI Army Cruise Model Toolkit (一人AI军团邮轮模式工具包)
+This toolkit operationalizes the "cruise ship" business model for a one-person AI Army, mapping 6 SKUs into 3 curated itineraries (Growth, Launch, E-com), with a Supabase schema for voyages/cabins/bookings, a front-end landing page structure, and a delivery pipeline integrated with the existing HITL SOP. It includes Stripe pricing, a voyage calendar, and compliance-focused delivery templates. The setup maximizes MRR, ancillary revenue, and scalability while maintaining auditability and human oversight.
+
+1. Itinerary and Cabin Definitions (航线与舱位定义)
+Itineraries (航线):  
+
+Itin-A | Growth Cruise (增长线): SKU-01 (Weekly Report) + SKU-03 (Social Media Assets) + SKU-07 (Competitor Monitoring). Cycle: 28 days. Capacity: 8 cabins.  
+Itin-B | Launch Cruise (发布线): SKU-09 (R&D Docs/Release Notes) + SKU-01 (Weekly Report). Cycle: 14 days. Capacity: 6 cabins.  
+Itin-C | E-com Cruise (电商线): SKU-08 (Listing & Insights) + SKU-07-Lite (Light Monitoring). Cycle: 28 days. Capacity: 6 cabins.
+
+Cabin Tiers (舱位等级):  
+
+Interior (入门): $499/voyage. Standard SLA (48h response, 1 revision), template-heavy, minimal human time.  
+Oceanview (专业): $1,499/voyage. Faster SLA (24h response, 2 revisions), light customization.  
+Suite (旗舰): $3,999/voyage. Priority queue, 10 human hours, custom scripts.
+
+Ancillary Add-ons (岸上活动):  
+
+Industry Deep Dive ($999, one-time).  
+Custom Prompt Library ($799, one-time).  
+2-Hour Training ($499, one-time).  
+Rush Delivery ($199/task).  
+Extra Revision ($99/round).
+
+Onboard Credit (OBC): $200 credit for annual subscribers, redeemable for add-ons.
+
+2. Supabase Schema (Supabase数据模型)
+-- Voyages: Tracks voyage schedules and status
+CREATE TABLE voyages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  itinerary_id VARCHAR(50) NOT NULL, -- e.g., Itin-A, Itin-B, Itin-C
+  start_date DATE NOT NULL,
+  cycle_days INTEGER NOT NULL, -- 14 or 28
+  capacity INTEGER NOT NULL, -- Max cabins (e.g., 8)
+  status VARCHAR(20) NOT NULL, -- Open, Full, Departed, Completed
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Cabins: Tracks cabin assignments per voyage
+CREATE TABLE cabins (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  voyage_id UUID REFERENCES voyages(id),
+  tier VARCHAR(20) NOT NULL, -- Interior, Oceanview, Suite
+  price DECIMAL(10,2) NOT NULL, -- e.g., 499.00
+  occupied BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bookings: Tracks client bookings
+CREATE TABLE bookings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  voyage_id UUID REFERENCES voyages(id),
+  cabin_id UUID REFERENCES cabins(id),
+  client_id VARCHAR(100) NOT NULL, -- Client identifier
+  payment_status VARCHAR(20) NOT NULL, -- Pending, Paid, Refunded
+  stripe_payment_id VARCHAR(100), -- Stripe PaymentIntent ID
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Addons: Tracks ancillary purchases
+CREATE TABLE addons (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  booking_id UUID REFERENCES bookings(id),
+  addon_type VARCHAR(50) NOT NULL, -- e.g., DeepDive, PromptLibrary
+  price DECIMAL(10,2) NOT NULL,
+  status VARCHAR(20) NOT NULL, -- Ordered, Delivered
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Setup Instructions: Deploy these tables in your Supabase project. Use voyages to schedule 8 weeks of voyages (e.g., Itin-A starts every 28 days, 8 cabins). Update cabins for tier pricing and availability. Link bookings to Stripe PaymentIntents. Log addons for ancillary tracking.
+
+3. Front-End Landing Page Structure (前端落地页结构)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>[Your Company Name] - AI Voyage Calendar</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-blue-600 text-white p-4">
+    <h1 class="text-3xl">Your AI Squad with a Human General</h1>
+    <p>Book a voyage for AI-powered growth, e-commerce, or product launches.</p>
+  </header>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Voyage Calendar (Next 8 Weeks)</h2>
+    <div id="voyage-calendar" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Dynamic: Fetch from Supabase voyages -->
+      <div class="border p-4">
+        <h3>Itin-A: Growth Cruise</h3>
+        <p>Start: [START_DATE]</p>
+        <p>Cabins Left: [CABINS_AVAILABLE]/8</p>
+        <p>Includes: Weekly Reports, Social Assets, Monitoring</p>
+        <button onclick="bookVoyage('Itin-A')" class="bg-blue-500 text-white p-2">Book Now</button>
+      </div>
+      <!-- Repeat for Itin-B, Itin-C -->
+    </div>
+  </section>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Cabin Tiers</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="border p-4">
+        <h3>Interior ($499)</h3>
+        <p>Standard SLA, template-driven.</p>
+      </div>
+      <div class="border p-4">
+        <h3>Oceanview ($1,499)</h3>
+        <p>24h response, 2 revisions.</p>
+      </div>
+      <div class="border p-4">
+        <h3>Suite ($3,999)</h3>
+        <p>Priority, 10 human hours.</p>
+      </div>
+    </div>
+  </section>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Add-ons</h2>
+    <ul class="list-disc pl-6">
+      <li>Industry Deep Dive ($999)</li>
+      <li>Custom Prompt Library ($799)</li>
+      <li>2-Hour Training ($499)</li>
+      <li>Rush Delivery ($199/task)</li>
+      <li>Extra Revision ($99/round)</li>
+    </ul>
+  </section>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Sample Deliverable</h2>
+    <a href="[REPLIT_URL]/sample.zip" class="text-blue-500">Download E-com Cruise Sample</a>
+  </section>
+  <footer class="bg-gray-800 text-white p-4">
+    <p>Compliance: AI-disclosed, human-signed, 90-day data retention.</p>
+    <p>Contact: [YOUR_EMAIL] | Book via [STRIPE_CHECKOUT_URL]</p>
+  </footer>
+  <script>
+    async function bookVoyage(itineraryId) {
+      // Fetch available cabins from Supabase
+      // Redirect to Stripe Checkout
+    }
+  </script>
+</body>
+</html>
+
+Instructions: Host on Replit, connect to Supabase for dynamic voyage data, and integrate Stripe Checkout. Update [REPLIT_URL] and [STRIPE_CHECKOUT_URL].
+
+4. Updated Stripe Product/Price JSON (Stripe产品/价格JSON)
+{
+  "products": [
+    {
+      "id": "prod_itin_a_interior",
+      "name": "Growth Cruise - Interior",
+      "description": "Weekly Reports, Social Assets, Monitoring (28 days)",
+      "prices": [
+        {
+          "id": "price_itin_a_interior",
+          "unit_amount": 49900,
+          "currency": "usd",
+          "recurring": { "interval": "month" }
+        }
+      ]
+    },
+    {
+      "id": "prod_itin_a_oceanview",
+      "name": "Growth Cruise - Oceanview",
+      "description": "Faster SLA, 2 revisions (28 days)",
+      "prices": [
+        {
+          "id": "price_itin_a_oceanview",
+          "unit_amount": 149900,
+          "currency": "usd",
+          "recurring": { "interval": "month" }
+        }
+      ]
+    },
+    {
+      "id": "prod_itin_a_suite",
+      "name": "Growth Cruise - Suite",
+      "description": "Priority, 10 human hours (28 days)",
+      "prices": [
+        {
+          "id": "price_itin_a_suite",
+          "unit_amount": 399900,
+          "currency": "usd",
+          "recurring": { "interval": "month" }
+        }
+      ]
+    },
+    {
+      "id": "prod_itin_b_interior",
+      "name": "Launch Cruise - Interior",
+      "description": "R&D Docs, Weekly Reports (14 days)",
+      "prices": [
+        {
+          "id": "price_itin_b_interior",
+          "unit_amount": 49900,
+          "currency": "usd",
+          "recurring": { "interval": "month", "interval_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "prod_itin_c_interior",
+      "name": "E-com Cruise - Interior",
+      "description": "Listings, Insights, Light Monitoring (28 days)",
+      "prices": [
+        {
+          "id": "price_itin_c_interior",
+          "unit_amount": 64900,
+          "currency": "usd",
+          "recurring": { "interval": "month" }
+        }
+      ]
+    },
+    {
+      "id": "prod_addon_research",
+      "name": "Industry Deep Dive",
+      "description": "One-time research report",
+      "prices": [
+        {
+          "id": "price_addon_research",
+          "unit_amount": 99900,
+          "currency": "usd",
+          "recurring": null
+        }
+      ]
+    },
+    {
+      "id": "prod_addon_prompt",
+      "name": "Custom Prompt Library",
+      "description": "One-time prompt set",
+      "prices": [
+        {
+          "id": "price_addon_prompt",
+          "unit_amount": 79900,
+          "currency": "usd",
+          "recurring": null
+        }
+      ]
+    },
+    {
+      "id": "prod_addon_training",
+      "name": "2-Hour Training",
+      "description": "One-time training",
+      "prices": [
+        {
+          "id": "price_addon_training",
+          "unit_amount": 49900,
+          "currency": "usd",
+          "recurring": null
+        }
+      ]
+    }
+  ]
+}
+
+Instructions: Import to Stripe, map to Supabase bookings. Annual subscriptions include $200 OBC (add as Stripe Coupon).
+
+5. Delivery Pipeline with HITL (交付流水线与HITL)
+7-Day Voyage Example (E-com Cruise):  
+
+D1 (Setup): Client request → Task card → Source pull (OSINT, e.g., competitor listings).  
+D2-D3 (Sea Days): AI agents generate listing drafts, review insights, light monitoring reports.  
+D4-D5 (Port Days): HITL review (fact-check, style, compliance), human sign-off.  
+D6: Finalize deliverables, archive logs.  
+D7 (Delivery): Zip package, send via [REPLIT_URL], notify client, preview next voyage.
+
+Delivery Package Structure:  
+Ecom_Voyage_[VOYAGE_ID]/
+├── Final_Deliverables/
+│   ├── Listings_[DATE].csv
+│   ├── Insights_[DATE].csv
+│   ├── Monitoring_Report_[DATE].pdf
+├── Sources_and_Licenses/
+│   ├── Citations.csv
+│   └── Licenses.txt
+├── Change_Log.md
+├── Reproducibility_Notes.md
+└── Audit_Log.json
+
+Compliance: 90-day data retention, human sign-off, copyright-compliant assets, desensitized PII.
+
+6. Revenue and Cost Projections (收入与成本预测)
+Base MRR (80% Occupancy):  
+
+Itin-A: 8×0.8×$499 = $3,194  
+Itin-B: 6×0.8×$499 = $2,395  
+Itin-C: 6×0.8×$649 = $3,115  
+Total Base MRR: $8,704
+
+Ancillary (30% uptake, $300 avg):  
+
+Passengers: (8+6+6)×0.8 = 16  
+Revenue: 16×0.3×$300 = $1,440  
+Total MRR: $10,144
+
+BOM (Cost):  
+
+AI inference: $0.01/task × ~10,000 tasks = $100  
+Human review: $50/hour × 20 hours = $1,000  
+Cloud/storage: $0.05/GB × 100 GB = $5  
+Total BOM: ~$1,105 (11% of revenue)  
+Gross Margin: ~89%
+
+Protective Guardrails:  
+
+Minimum gross margin: 65%.  
+Rework/failure rate: ≤15%. If exceeded, reduce scope or increase price.
+
+
+Customization Notes (定制说明)
+
+Itinerary Swap: Replace Itin-A/B/C with Itin-D (Audit) by updating Supabase voyages.itinerary_id and Stripe products.  
+Cycle/Capacity: Adjust cycle_days (7/14/28) and capacity in voyages.  
+JIN Settlement: Add [JIN_SETTLEMENT_TERMS] to bookings table and SOW.  
+Replit: Host landing page and delivery samples at [REPLIT_URL].
+
+Next Steps:  
+
+Deploy Supabase schema, populate 8-week voyage calendar.  
+Host landing page on Replit, integrate Stripe Checkout.  
+Run pilot voyage (Itin-C) with 3-5 clients, deliver per HITL pipeline, and collect metrics (e.g., conversion rate lift).
