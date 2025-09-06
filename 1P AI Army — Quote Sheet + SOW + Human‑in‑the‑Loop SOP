@@ -1,0 +1,828 @@
+# 1P AI Army — Quote Sheet + SOW + Human‑in‑the‑Loop SOP (EN/中文) v1
+
+> Use these as copy‑ready templates. Replace placeholders like `{ClientName}`, `{ProjectName}`, `{Currency}`, `{StartDate}`. Add or remove modules to fit scope. The legal language is **sample** only—have local counsel review.
+
+---
+
+## 0) Quick Index / 快速索引
+
+* [1. Quote Sheet (Pricing Menu)](#1-quote-sheet-pricing-menu)
+* [2. SOW Template (工作说明书模板)](#2-sow-template-工作说明书模板)
+* [3. Human‑in‑the‑Loop SOP (人‑在‑环标准作业流程)](#3-humanin-theloop-sop-人在环标准作业流程)
+* [4. Delivery Package Structure (交付包结构)](#4-delivery-package-structure-交付包结构)
+* [5. SLA Metrics & Reports (服务级别指标与报告)](#5-sla-metrics--reports-服务级别指标与报告)
+* [6. Clause Bank (样例条款库)](#6-clause-bank-样例条款库)
+* [7. Change Requests & Rate Card (变更与计费)](#7-change-requests--rate-card-变更与计费)
+* [8. Incident Response Playbook (事件响应手册模板)](#8-incident-response-playbook-事件响应手册模板)
+* [9. Prompt Library Versioning (提示词库版本化模板)](#9-prompt-library-versioning-提示词库版本化模板)
+
+---
+
+## 1) Quote Sheet (Pricing Menu)
+
+**Branding:** “Your outsourced AI squad with a human general.”
+**Currency:** `{Currency}` (optionally show USD / {JIN} side‑by‑side).
+**Billing:** Monthly subscription + one‑off projects. Payment due Net‑`{NetDays}`.
+
+### 1.1 Productized SKUs / 标准化套餐（可订阅）
+
+| SKU  | Name                           | Cadence     | Core Deliverables                       | SLA Highlights                | Base Price |
+| ---- | ------------------------------ | ----------- | --------------------------------------- | ----------------------------- | ---------- |
+| S‑01 | Industry Weekly Brief          | Weekly      | 10‑page brief w/ sources, trend flags   | 2‑day turnaround; 1 revision  | {Price}    |
+| S‑02 | Website + SEO Monthly          | Monthly     | 4 posts, internal link map, titles/meta | Publish ±3 days; CTR A/B plan | {Price}    |
+| S‑03 | Social Creative Pack           | Monthly     | 30 images + 10 scripts + captions       | 3‑day revision window         | {Price}    |
+| S‑04 | Sales/Support KB Care          | Monthly     | KB updates + Q/A samples                | Response ≤`{X}`h              | {Price}    |
+| S‑05 | Data Clean + Dashboard         | Monthly     | Source‑to‑metric reconciliation + deck  | Data drift alerting           | {Price}    |
+| S‑06 | Legal/Privacy Docs Care\*      | Monthly     | Policy templates update log             | Counsel review required       | {Price}    |
+| S‑07 | Competitor/ORM Monitor         | Monthly     | Alerts + monthly digest                 | False‑positive rate ≤`{Y}%`   | {Price}    |
+| S‑08 | E‑com Listing + Reviews        | Monthly     | Listings, assets, review insights       | License ledger attached       | {Price}    |
+| S‑09 | Release Notes & Docs           | Per release | Changelog, user guide, API refs         | 48h pre‑GA draft              | {Price}    |
+| S‑10 | Workflow Health Check          | Monthly     | Automation check + regression set       | Error budget report           | {Price}    |
+| S‑11 | City/Relocation Guide          | Quarterly   | Area report + compare tables            | Data time‑stamped             | {Price}    |
+| S‑12 | RFP/RFQ Assist (light)         | Project     | Requirements map + compliance grid      | 2 review cycles               | {Price}    |
+| S‑13 | **AI Workflow Audit (Add‑on)** | Monthly     | Audit of client AI stack + risks        | HITL thresholds report        | {Price}    |
+
+\* Non‑legal advice; see Clause Bank.
+
+### 1.2 Tiered Bundles / 三档打包
+
+**Entry** — 任选2个SKU；邮箱支持，`{X}`‑day SLA；{Price}/mo
+**Pro** — 任选4个SKU；Slack支持，`{X}`‑hour SLA；季度 business review；{Price}/mo
+**Flagship** — 任选6个SKU + `{N}` human hours；priority queue；dedicated channel；{Price}/mo
+
+### 1.3 One‑Off Add‑ons / 单次附加
+
+* Research Deep‑Dive（`{N}` pages, sources) — {Price}
+* Custom Prompt Library (team) — {Price}
+* Onsite/Zoom Training (2h) — {Price}
+
+**Payment Methods:** invoice via `{Stripe/USDT/Wire}`. Optional `{JIN}` denomination at rate `{1 JIN = …}`.
+
+---
+
+## 2) SOW Template / 工作说明书模板
+
+**Document:** Statement of Work (SOW)
+**Parties / 双方**: `{ClientName}` ("Client") and `{YourCompany}` ("Provider").
+**Effective Date / 生效日**: `{StartDate}`
+
+### 2.1 Scope / 工作范围
+
+* Project Name / 项目名称: `{ProjectName}`
+* Objectives / 目标: `{Objectives}`
+* Deliverables / 交付物: list artifacts, formats, languages, cadences.
+* Out‑of‑Scope / 非范围: `{Explicitly excluded items}`
+
+### 2.2 Acceptance Criteria / 验收标准
+
+* Format & Structure / 格式结构: `{docx/md/pdf/code}`
+* Source Attribution / 来源要求: citations or dataset ledger attached
+* Quality Gates / 质量门槛: factual error rate ≤ `{X}%`; stylistic guide `{GuideName}`
+* Review Window / 复核窗口: Client has `{7}` calendar days to request fixes.
+
+### 2.3 Schedule & Milestones / 进度与里程碑
+
+* `{Milestone 1}` — due `{Date}` — `{Artifact}`
+* `{Milestone 2}` — due `{Date}` — `{Artifact}`
+
+### 2.4 Pricing & Payment / 价格与付款
+
+* Fee / 费用: `{Amount} {Currency}` (plus taxes).
+* Terms / 条款: Net `{NetDays}`; late fee `{Late%}` after `{Days}` days.
+* Change Requests / 变更: see CR policy; additional work billed per Rate Card.
+
+### 2.5 Dependencies / 依赖
+
+* Client to provide `{Accounts/Data/BrandGuide}` by `{Date}`.
+* Access control and data classification agreed prior to work.
+
+### 2.6 HITL & Compliance / 人在环与合规
+
+* Provider uses AI systems for drafts; **human review and sign‑off required**.
+* Privacy: minimum necessary data; de‑identification where feasible.
+* Logs: prompts/tools/model versions retained for `{90}` days unless otherwise agreed.
+
+### 2.7 Intellectual Property / 知识产权
+
+* Upon full payment, deliverable copyrights (excluding base models & generic libs) transfer to Client. Provider retains non‑confidential know‑how and templates.
+
+### 2.8 Warranties & Disclaimers / 保证与免责声明
+
+* Outputs may contain errors; Client must review before production use.
+* No legal, medical, tax, or investment advice. See Clause Bank.
+
+### 2.9 Liability & Insurance / 责任与保险
+
+* Indirect/consequential damages excluded. Direct liability cap = fees paid under this SOW. Provider maintains Tech E\&O/Cyber where available.
+
+### 2.10 Termination / 终止
+
+* For convenience with `{X}` days’ notice; fees pro‑rated; all materials returned or deleted per retention policy.
+
+**Signatures / 签署**
+Client: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  Date: \_\_\_\_
+Provider: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  Date: \_\_\_\_
+
+---
+
+## 3) Human‑in‑the‑Loop SOP / 人‑在‑环标准作业流程
+
+**Roles**: Human General (HG), Control Plane (CP), AI Agents (AA), Client Reviewer (CR).
+
+### 3.1 Four Gates / 四道关
+
+1. **Task Gate 任务关** — clarify goals, acceptance, redlines.
+   Checklist: Objective, Deliverables, Sources reqs, SLA, Risks, Due date, Owner.
+2. **Data Gate 数据关** — minimum necessary data; classify (Public/Internal/Confidential/Restricted).
+   Checklist: Access list, PII map, DPA/NDA, masking rules, test vs prod.
+3. **Quality Gate 质量关** — auto checks (factual, style, safety) + human spot check `≥{20}%` of content.
+   Checklist: citations valid, licenses ledger, run regression set, sign‑off HG.
+4. **Delivery Gate 交付关** — versioned final, checksum/signature; change log; deletion/retention applied.
+
+### 3.2 Logs & Audit / 日志与审计
+
+* Record: prompt hash, tool calls, model versions, datasets, output hash, reviewer, timestamp.
+* Store `{90}` days; extend on legal hold. Provide extract on Client request.
+
+### 3.3 Red Team & Drills / 红队与演练
+
+* Quarterly: jailbreak/PII exfil drills; record findings; patch SOP.
+
+---
+
+## 4) Delivery Package Structure / 交付包结构
+
+```
+Delivery-{ProjectName}-{YYYYMMDD}/
+  01_Final/                      # signed-off deliverables (PDF/DOCX/ZIP/code)
+  02_Sources/                    # citations.csv, dataset_ledger.csv, licenses/
+  03_Logs/                       # prompt_log.jsonl, tool_calls.jsonl, model_versions.txt
+  04_Scripts/                    # reproduce.sh / notebooks / config.yaml
+  05_Changelog/                  # CHANGELOG.md (semver + dates)
+  06_SLA-Report/                 # metrics.md (RT, corrections, uptime)
+  07_Annex_Confidential/         # client data snapshots (if any, encrypted)
+  README.md                      # how to verify, reproduce, contact, version
+```
+
+**README.md (template)**
+
+* Version: `{vX.Y.Z}`
+* Verify: checksums, expected outputs
+* Reproduce: steps + env vars
+* Sources: `sources/citations.csv`
+* Contact: `{email}`
+* Retention: delete or archive by `{Date}` per policy
+
+---
+
+## 5) SLA Metrics & Reports / 服务级别指标与报告
+
+* **Response Time**: First response ≤ `{X}` hours.
+* **Turnaround**: Standard items within `{N}` business days.
+* **Correction Window**: `{7}` days after delivery for factual fixes.
+* **Accuracy**: Sampled factual error rate ≤ `{Y}%`.
+* **Coverage**: Min `{K}` sources per major claim, time‑stamped.
+* **Safety**: PII leak risk ≤ `{Threshold}` per scanner; license ledger 100% complete.
+* **Uptime (if hosted)**: `{99.x}%` monthly; error budget `{E}`.
+
+**Monthly Report Includes**: delivered items, SLA adherence, incidents, improvement plan.
+
+---
+
+## 6) Clause Bank / 样例条款库（选用）
+
+> **These are sample clauses, not legal advice. Consult counsel.**
+
+### 6.1 AI Use Disclosure / AI 使用披露
+
+**EN:** Provider uses automation and AI systems to draft materials; **final deliverables require human review and written confirmation by Provider**. AI systems are not independent contracting parties.
+**中文：** 乙方在提供服务时将使用自动化与AI系统。**最终交付以乙方人工复核并书面确认的版本为准**。AI系统不构成独立承诺主体。
+
+### 6.2 Hallucination & Accuracy / 幻觉与准确性
+
+**EN:** Outputs may contain errors or omissions. Client agrees to review and validate before production use. Provider’s obligation is timely correction upon notice within the correction window.
+**中文：** 输出可能包含错误或遗漏。甲方在生产使用前应自行复核与验证。在纠错窗口期内，乙方的义务为及时纠正。
+
+### 6.3 IP Transfer / 知识产权转让
+
+**EN:** Upon full payment, Provider assigns to Client the copyrights in the deliverables (excluding base models, general libraries, and Provider’s pre‑existing know‑how).
+**中文：** 在项目款项支付完成后，乙方将交付物的著作权转让给甲方（不含底层模型、通用库与乙方既有方法与模板）。
+
+### 6.4 Data Protection & Retention / 数据保护与留存
+
+**EN:** Provider processes only the minimum necessary Client Data, applies de‑identification where feasible, and maintains access logs. Unless otherwise agreed, Client Data is deleted or anonymized within `{90}` days after project completion.
+**中文：** 乙方仅在履约所需的最小范围内处理甲方数据，在可行范围内进行去标识化并保留访问日志。除非另有约定，项目完成后 `{90}` 天内删除或匿名化甲方数据。
+
+### 6.5 OSINT‑Only Due Diligence / 仅限公开源信息
+
+**EN:** For diligence and risk reports, Provider relies on open‑source, publicly available information and does not collect sensitive personal data without explicit written authorization.
+**中文：** 在尽调与风险报告中，乙方仅使用开源、公共可得信息，未经书面授权不收集敏感个人信息。
+
+### 6.6 Liability Cap / 责任上限
+
+**EN:** No indirect, incidental, or consequential damages. Aggregate liability under this SOW is capped at the fees paid by Client hereunder.
+**中文：** 任何一方不承担间接、附带或后果性损失。本SOW项下的累计赔偿责任以上述费用总额为上限。
+
+### 6.7 Non‑Advice Disclaimer / 非专业建议
+
+**EN:** Deliverables are for informational purposes only and do not constitute legal, medical, tax, accounting, or investment advice.
+**中文：** 交付物仅用于信息参考，不构成法律、医疗、税务、会计或投资建议。
+
+---
+
+## 7) Change Requests & Rate Card / 变更与计费
+
+* **CR Workflow:** Client submits CR form → impact analysis (scope/time/fee) → written approval → scheduling.
+* **Rush Factor:** delivery `< {48}h` may incur `{+X%}` surcharge.
+* **Rate Card:** Analyst `{Rate}/h`; Engineer `{Rate}/h`; PM `{Rate}/h`.
+* **Free Revisions:** `{1-2}` rounds within review window for scope‑aligned fixes.
+
+**CR Form (fields):** Title, Reason, Affected deliverables, Priority, Desired date, Budget impact ok? (Y/N)
+
+---
+
+## 8) Incident Response Playbook / 事件响应手册模板
+
+**Scope:** simulations and documentation templates; no real‑time MSSP.
+**Phases:** Identify → Contain → Eradicate → Recover → Post‑mortem.
+**RACI:** HG (A/R), CP (C), AA (R), Client Security (A/R).
+
+**Runbook Skeleton:**
+
+1. Trigger & Triage — who/when; severity `{S1‑S4}`
+2. Evidence & Timeline — artifacts path `03_Logs/`
+3. Containment Steps — access revocation, key rotation
+4. Notifications — client POC, legal, affected users (if any)
+5. Recovery — restore from clean state; validate
+6. Post‑mortem — root cause, corrective actions, owners, due dates
+
+---
+
+## 9) Prompt Library Versioning / 提示词库版本化模板
+
+**Repo Layout:**
+
+```
+prompts/
+  README.md
+  /tasks/          # task-specific prompts with I/O schema
+  /policies/       # safety, tone, brand style
+  /tools/          # tool-usage exemplars
+  /playbooks/      # multi-agent flows (CrewAI/LangChain)
+CHANGELOG.md       # semver + date + reviewer
+version.json       # {"prompt_lib": "vX.Y.Z", "reviewer": "HG", "date": "YYYY-MM-DD"}
+```
+
+**Review Checklist:** intent stated, I/O schema, negative prompts, citations rules, eval cases, rollback note.
+
+---
+
+### Final Notes / 备注
+
+* Replace placeholders and localize compliance to your jurisdiction.
+* Align pricing units with your tokens/credits if applicable.
+* Keep audit logs exportable for enterprise clients.
+* Review with counsel before first use.
+
+---
+
+# Annex A — Replit + Stripe + OpenAI Starter (Deployable) / 可部署落地方案
+
+> Target: **take orders + collect payment + generate deliverables** on Replit, powered by OpenAI. Includes subscription SKUs, one‑off add‑ons, metered billing, and HITL logging. (Legal terms live in main SOW.)
+
+## A1. Architecture / 架构
+
+* **Frontend**: minimal HTML (or Next.js) purchase page → calls backend to create Stripe Checkout Sessions.
+* **Backend**: FastAPI on Replit; endpoints for checkout, webhooks, generation, packaging, and audit logs.
+* **Billing**: Stripe Billing (subscriptions for S‑01…S‑13; one‑off for add‑ons; optional **metered** usage for OpenAI cost pass‑through).
+* **AI**: OpenAI Responses/Completions via official SDK; model name via env `{OPENAI_MODEL}`.
+* **Storage**: SQLite (starter) or Supabase Postgres (prod). Artifacts stored as files; logs as JSONL.
+* **HITL**: sign‑off required before moving draft → `01_Final/`.
+
+## A2. One‑Click Replit Setup / 快速搭建（Replit）
+
+1. Create Repl → Python → add files below.
+2. **Secrets** Tab set:
+
+   * `OPENAI_API_KEY`, `OPENAI_MODEL` (e.g. `gpt-4o-mini` or your latest),
+   * `STRIPE_SECRET_KEY` (live/test), `STRIPE_WEBHOOK_SECRET`,
+   * `BASE_URL` (your Replit URL), `ADMIN_EMAIL`,
+   * optional: `DATABASE_URL` (Supabase) else default SQLite `app.db`.
+3. Shell: `pip install -r requirements.txt` then `uvicorn app:app --host 0.0.0.0 --port 8000`.
+4. **Stripe CLI (local)**: `stripe listen --forward-to <your-repl-url>/webhook/stripe` to capture webhook secret; set it in Replit Secrets.
+5. Deploy → Replit Deployments (Reserved VM recommended for always‑on).
+
+## A3. Files / 文件清单
+
+```
+requirements.txt
+app.py
+billing.py
+models.py
+packaging.py
+static/index.html
+stripe_seed.json
+README_DEPLOY.md
+```
+
+### requirements.txt
+
+```
+fastapi
+uvicorn
+stripe
+pydantic
+sqlalchemy
+aiosqlite
+python-multipart
+openai
+```
+
+### app.py (FastAPI core)
+
+```python
+import os, time, json, hashlib, csv, io, zipfile
+from datetime import datetime
+from typing import Optional
+from fastapi import FastAPI, Request, HTTPException, UploadFile, Form
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+import stripe
+from openai import OpenAI
+from billing import create_checkout_session, verify_webhook, lookup_price
+from models import init_db, SessionLocal, Client, Order, Log
+from packaging import build_delivery_zip
+
+app = FastAPI()
+app.mount('/static', StaticFiles(directory='static'), name='static')
+
+OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+@app.on_event('startup')
+async def startup():
+    init_db()
+
+@app.get('/')
+async def home():
+    with open('static/index.html','r',encoding='utf-8') as f:
+        return HTMLResponse(f.read())
+
+class CheckoutBody(BaseModel):
+    sku: str  # e.g., 'S-01'
+    email: Optional[str] = None
+
+@app.post('/checkout')
+async def checkout(body: CheckoutBody):
+    url = create_checkout_session(body.sku, body.email)
+    return { 'url': url }
+
+@app.post('/webhook/stripe')
+async def stripe_webhook(request: Request):
+    payload = await request.body()
+    sig = request.headers.get('stripe-signature')
+    event = verify_webhook(payload, sig)
+
+    if event['type'] in ['checkout.session.completed','invoice.paid','customer.subscription.created']:
+        db = SessionLocal()
+        data = event['data']['object']
+        order = Order(
+            external_id = data.get('id'),
+            email = (data.get('customer_details') or {}).get('email'),
+            sku = lookup_price(data),
+            status = 'paid',
+            amount = data.get('amount_total') or data.get('amount_paid')
+        )
+        db.add(order); db.commit()
+        db.close()
+    return JSONResponse({'ok': True})
+
+class BriefBody(BaseModel):
+    project_name: str
+    topics: list[str]
+    language: str = 'EN'
+
+@app.post('/generate/weekly-brief')
+async def generate_weekly_brief(body: BriefBody):
+    # 1) Draft with OpenAI
+    prompt = f"Create a 10-page industry brief; language={body.language}; topics={body.topics}; include sources and time-stamps."
+    start = time.time()
+    resp = client.responses.create(
+        model=OPENAI_MODEL,
+        input=[
+            {"role":"system","content":"You are a cautious analyst. Always enumerate sources and add time-stamps. If unsure, say so."},
+            {"role":"user","content": prompt}
+        ]
+    )
+    draft_text = resp.output_text
+
+    # 2) Log HITL draft
+    db = SessionLocal()
+    log = Log(kind='draft', content=draft_text[:10000])
+    db.add(log); db.commit(); db.refresh(log)
+
+    # 3) Package deliverable skeleton
+    zip_bytes = build_delivery_zip(
+        project_name=body.project_name,
+        draft_text=draft_text,
+        sources=[{"title":"(client to verify)","url":"","date":""}],
+        model=OPENAI_MODEL,
+        elapsed=round(time.time()-start,1)
+    )
+    headers = {
+        'Content-Disposition': f"attachment; filename=Delivery-{body.project_name}-{datetime.utcnow().strftime('%Y%m%d')}.zip"
+    }
+    return StreamingResponse(io.BytesIO(zip_bytes), media_type='application/zip', headers=headers)
+```
+
+### billing.py (Stripe helper)
+
+```python
+import os, stripe, json
+from fastapi import HTTPException
+
+stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+PRICE_MAP = {}  # sku -> price_id filled by seed
+
+with open('stripe_seed.json','r',encoding='utf-8') as f:
+    data = json.load(f)
+    for item in data['prices']:
+        PRICE_MAP[item['sku']] = item['price_id']
+
+DOMAIN = os.getenv('BASE_URL','http://localhost:8000')
+WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+def create_checkout_session(sku: str, email: str|None):
+    price_id = PRICE_MAP.get(sku)
+    if not price_id:
+        raise HTTPException(400, f'Unknown SKU {sku}')
+    session = stripe.checkout.Session.create(
+        mode='subscription' if sku.startswith('S-') else 'payment',
+        line_items=[{'price': price_id, 'quantity': 1}],
+        success_url=f'{DOMAIN}/static/index.html?success=1',
+        cancel_url=f'{DOMAIN}/static/index.html?canceled=1',
+        customer_email=email
+    )
+    return session.url
+
+
+def verify_webhook(payload: bytes, sig: str):
+    if not WEBHOOK_SECRET:
+        return stripe.Event.construct_from(json.loads(payload), stripe.api_key)
+    try:
+        return stripe.Webhook.construct_event(payload, sig, WEBHOOK_SECRET)
+    except Exception as e:
+        raise HTTPException(400, f'Webhook verify failed: {e}')
+
+
+def lookup_price(event_obj):
+    # naive mapping; improve as needed
+    lines = (event_obj.get('lines') or {}).get('data') or []
+    if lines:
+        pid = lines[0]['price']['id']
+        for sku, price in PRICE_MAP.items():
+            if price == pid:
+                return sku
+    return None
+```
+
+### models.py (SQLite + SQLAlchemy)
+
+```python
+import os
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker
+from datetime import datetime
+
+DB_URL = os.getenv('DATABASE_URL','sqlite:///app.db')
+engine = create_engine(DB_URL, connect_args={'check_same_thread': False} if DB_URL.startswith('sqlite') else {})
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
+
+class Client(Base):
+    __tablename__ = 'clients'
+    id = Column(Integer, primary_key=True)
+    email = Column(String, unique=True)
+
+class Order(Base):
+    __tablename__ = 'orders'
+    id = Column(Integer, primary_key=True)
+    external_id = Column(String)
+    email = Column(String)
+    sku = Column(String)
+    status = Column(String)
+    amount = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class Log(Base):
+    __tablename__ = 'logs'
+    id = Column(Integer, primary_key=True)
+    kind = Column(String)
+    content = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+def init_db():
+    Base.metadata.create_all(engine)
+```
+
+### packaging.py (Delivery ZIP builder)
+
+```python
+import io, json, csv, time, zipfile
+from datetime import datetime
+
+def build_delivery_zip(project_name: str, draft_text: str, sources: list[dict], model: str, elapsed: float)->bytes:
+    buf = io.BytesIO()
+    today = datetime.utcnow().strftime('%Y%m%d')
+    root = f'Delivery-{project_name}-{today}/'
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as z:
+        z.writestr(root+'01_Final/README.txt', 'Move signed-off deliverables here after HITL review.')
+        z.writestr(root+'02_Sources/citations.csv', _csv_sources(sources))
+        z.writestr(root+'03_Logs/model_versions.txt', f'model={model}
+')
+        z.writestr(root+'03_Logs/notes.txt', f'elapsed_s={elapsed}
+')
+        z.writestr(root+'04_Scripts/reproduce.sh', '#!/usr/bin/env bash
+echo "Reproduce analysis here"
+')
+        changelog = f"# CHANGELOG
+- {today}: Draft generated.
+"
+        z.writestr(root+'05_Changelog/CHANGELOG.md', changelog)
+        z.writestr(root+'06_SLA-Report/metrics.md', 'Pending final metrics...')
+        manifest = {
+            'project': project_name, 'date': today, 'files': [
+                '01_Final/README.txt','02_Sources/citations.csv','03_Logs/model_versions.txt',
+                '04_Scripts/reproduce.sh','05_Changelog/CHANGELOG.md','06_SLA-Report/metrics.md','README.md'
+            ]}
+        z.writestr(root+'MANIFEST.json', json.dumps(manifest, indent=2))
+        readme = f"""# Delivery Package: {project_name}
+Version: v0.1.0
+Verify: See MANIFEST.json
+Sources: 02_Sources/citations.csv
+Contact: support@example.com
+Retention: Delete/archive within 90 days
+"""
+        z.writestr(root+'README.md', readme)
+        z.writestr(root+'01_Final/DRAFT.txt', draft_text)
+    return buf.getvalue()
+
+
+def _csv_sources(rows):
+    out = io.StringIO()
+    w = csv.DictWriter(out, fieldnames=['title','url','date'])
+    w.writeheader()
+    for r in rows: w.writerow(r)
+    return out.getvalue()
+```
+
+### static/index.html (Minimal storefront)
+
+```html
+<!doctype html>
+<html><head><meta charset="utf-8"/><title>1P AI Army — Store</title></head>
+<body>
+  <h1>Purchase</h1>
+  <p>Select a SKU then pay via Stripe Checkout.</p>
+  <select id="sku">
+    <option value="S-01">S-01 Industry Weekly Brief</option>
+    <option value="S-03">S-03 Social Creative Pack</option>
+    <option value="S-09">S-09 Release Notes & Docs</option>
+  </select>
+  <input id="email" placeholder="email (optional)"/>
+  <button onclick="buy()">Buy</button>
+  <script>
+  async function buy(){
+    const body = { sku: document.getElementById('sku').value, email: document.getElementById('email').value };
+    const res = await fetch('/checkout',{method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+    const data = await res.json(); window.location = data.url; }
+  </script>
+</body></html>
+```
+
+### stripe\_seed.json (Map SKUs → Prices)
+
+```json
+{
+  "prices": [
+    {"sku": "S-01", "price_id": "price_123weekly"},
+    {"sku": "S-03", "price_id": "price_123monthly"},
+    {"sku": "S-09", "price_id": "price_123release"}
+  ]
+}
+```
+
+> Create actual Products/Prices in Stripe Dashboard or via CLI, then paste price IDs here.
+
+## A4. Stripe Billing Patterns / 计费模式
+
+* **Subscriptions**: S‑01…S‑13 as recurring (monthly/weekly/quarterly).
+* **One‑off**: Add‑ons (Research deep‑dive, training) as `mode=payment`.
+* **Metered Usage (optional)**: Create a metered price; report OpenAI token usage with `stripe.subscription_items.create_usage_record(...)` per order.
+
+## A5. HITL & Compliance Hooks / 人在环与合规挂钩
+
+* Webhook → create `Order(status=paid)` → **queue draft generation** but require human sign‑off before moving to `01_Final/`.
+* Logs kept 90 days (see `models.Log`). Add reviewer name & checksum of final file.
+* Add `privacy: sources pre‑approved by client` checklist before generation.
+
+## A6. OpenAI Integration Notes / OpenAI 接入要点
+
+* Model via env: `OPENAI_MODEL`.
+* Prefer Responses API; enforce **source enumeration** in prompts.
+* For verticals needing browsing, integrate a retrieval tool (RAG) and inject citations into `02_Sources/citations.csv`.
+
+## A7. Deploy Steps Checklist / 上线清单
+
+1. Create Stripe Products/Prices (S‑01…S‑13) → fill `stripe_seed.json`.
+2. Set Replit Secrets: API keys, webhook secret, base URL.
+3. Test Checkout in test mode → verify webhook writes Orders.
+4. Generate a sample brief via `/static/index.html` + `/generate/weekly-brief`.
+5. Run a HITL review → move `DRAFT.txt` → `01_Final/` and re‑zip for delivery.
+6. Switch to live keys; update TOS/Privacy; enable tax collection if required.
+
+## A8. Next Improvements / 后续增强
+
+* Admin dashboard (Next.js) for orders, logs, deliverables.
+* Supabase Postgres + storage for artifacts.
+* Client portal (Stripe Billing Portal) for plan changes & invoices.
+* Role‑based access & SSO (Clerk/Auth).
+* Automated monthly SLA report generator.
+
+—— End Annex A ——
+
+---
+
+# Annex B — “Shovel‑Only” GTM & Pricing Playbook / 只卖锄头增长与定价手册
+
+> Goal: sell standardized packages (SKUs) to many buyers; keep margins high via templates, automation, and HITL. Currency shows **USD + JIN (1 JIN = 6 USD)**; adjust in Quote Sheet if needed.
+
+## B1. Core Catalog (Start with 6) / 最小上架 6 个 SKU
+
+* **S‑01 Industry Weekly Brief** — fast recurring, low delivery risk
+* **S‑03 Social Creative Pack** — high perceived value, visual deliverables
+* **S‑07 Competitor/ORM Monitor** — sticky, alert‑driven
+* **S‑08 E‑com Listing + Reviews** — direct business value, clear before/after
+* **S‑09 Release Notes & Docs** — engineering‑adjacent, repeatable per release
+* **S‑13 AI Workflow Audit** — wedge into more depts; creates upsell paths
+
+## B2. Price Menu (USD & JIN) / 价格表（USD\&JIN）
+
+> Launch prices；可根据需求+复杂度分层。Annual prepay ‑10%.
+
+| SKU                          | Cadence     | Base Price (USD) |     JIN | Notes                              |
+| ---------------------------- | ----------- | ---------------: | ------: | ---------------------------------- |
+| S‑01 Weekly Brief            | Monthly     |            \$349 |  58 JIN | 4× briefs/mo, time‑stamped sources |
+| S‑03 Social Creative Pack    | Monthly     |            \$499 |  83 JIN | 30 images + 10 scripts + captions  |
+| S‑07 Competitor/ORM Monitor  | Monthly     |            \$399 |  67 JIN | Alerts + digest; FP ≤5%            |
+| S‑08 E‑com Listing + Reviews | Monthly     |            \$649 | 108 JIN | Listings + asset kit + insights    |
+| S‑09 Release Notes & Docs    | Per release |            \$599 | 100 JIN | Changelog + user guide + API refs  |
+| S‑13 AI Workflow Audit       | Monthly     |            \$450 |  75 JIN | Stack review + HITL thresholds     |
+
+**Bundles / 打包**
+
+* **Entry**（任选2）\$799/mo | 133 JIN
+* **Pro**（任选4）\$1,999/mo | 333 JIN
+* **Flagship**（任选6 + 10h人力）\$3,999/mo | 666 JIN
+
+> Optional onboarding/setup fee for data integrations: \$300–\$900.
+
+## B3. Stripe Catalog Seed / Stripe 产品与价格种子
+
+Create Products and Prices from this config. Then run `seed_stripe.py` to create them and write back IDs.
+
+### stripe\_catalog.json
+
+```json
+{
+  "currency": "usd",
+  "products": [
+    {"sku": "S-01", "name": "S-01 Industry Weekly Brief", "type": "recurring", "interval": "month", "amount": 34900, "metadata": {"cadence": "weekly", "pages": "10"}},
+    {"sku": "S-03", "name": "S-03 Social Creative Pack", "type": "recurring", "interval": "month", "amount": 49900, "metadata": {"assets": "30+10"}},
+    {"sku": "S-07", "name": "S-07 Competitor/ORM Monitor", "type": "recurring", "interval": "month", "amount": 39900, "metadata": {"fp_max": "5%"}},
+    {"sku": "S-08", "name": "S-08 E-com Listing & Reviews", "type": "recurring", "interval": "month", "amount": 64900, "metadata": {"licenses": "ledger"}},
+    {"sku": "S-09", "name": "S-09 Release Notes & Docs", "type": "oneoff", "amount": 59900, "metadata": {"deadline": "48h pre-GA"}},
+    {"sku": "S-13", "name": "S-13 AI Workflow Audit", "type": "recurring", "interval": "month", "amount": 45000, "metadata": {"hitl": "thresholds"}},
+    {"sku": "B-ENTRY", "name": "Bundle: Entry (Pick 2)", "type": "recurring", "interval": "month", "amount": 79900, "metadata": {"includes": "2 SKUs"}},
+    {"sku": "B-PRO", "name": "Bundle: Pro (Pick 4)", "type": "recurring", "interval": "month", "amount": 199900, "metadata": {"includes": "4 SKUs"}},
+    {"sku": "B-FLAG", "name": "Bundle: Flagship (6 + 10h)", "type": "recurring", "interval": "month", "amount": 399900, "metadata": {"includes": "6 SKUs + 10h"}}
+  ]
+}
+```
+
+### seed\_stripe.py
+
+```python
+import os, json, stripe
+
+stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+
+with open('stripe_catalog.json','r',encoding='utf-8') as f:
+    cfg = json.load(f)
+
+created = {"prices": [], "products": []}
+for p in cfg['products']:
+    prod = stripe.Product.create(name=p['name'], metadata={"sku": p['sku'], **p.get('metadata',{})})
+    created['products'].append({"sku": p['sku'], "product_id": prod.id})
+    if p['type'] == 'recurring':
+        price = stripe.Price.create(
+            unit_amount=p['amount'], currency=cfg['currency'], product=prod.id,
+            recurring={"interval": p['interval']}
+        )
+    else:
+        price = stripe.Price.create(unit_amount=p['amount'], currency=cfg['currency'], product=prod.id)
+    created['prices'].append({"sku": p['sku'], "price_id": price.id})
+
+with open('stripe_seed.out.json','w',encoding='utf-8') as f:
+    json.dump(created, f, indent=2)
+print('Catalog seeded. IDs written to stripe_seed.out.json')
+```
+
+> Import `stripe_seed.out.json` IDs into `stripe_seed.json` used by Annex A billing.
+
+## B4. Buyer Personas → Offer Map / 画像‑套餐映射
+
+* **DTC 电商老板（1–10人）**：S‑08 + S‑07；近 30 天转化率\&ROAS提升做证据。
+* **SaaS 初创（PM/DevRel）**：S‑09 + S‑01；强调发布效率与支持自助文档。
+* **本地服务商（律师/诊所/地产团队）**：S‑03 + S‑01；合规内容 + 品牌素材。
+* **市场代理/外包商**：B‑PRO 捆绑；你做“白标 AI 小队”。
+
+## B5. Funnel & Targets / 漏斗目标（首 90 天）
+
+* **Top‑of‑funnel**：每周 50 个触达（冷邮件/LinkedIn/社群）
+* **Call/演示**：≥10/周；**试用/首单**：≥6/周；**订阅**：≥3/周
+* 基线转化：触达→通话 20%；通话→付费 30%；首月流失 < 20%
+
+## B6. Sales Assets / 销售资产
+
+**Landing 结构**：痛点 → 3 张前后对比图 → 价格表 → 样例交付（可下载 ZIP） → FAQ → 法务与合规 → CTA。
+
+**Cold Email 模板（简）**
+
+> 主题：每月节省您团队 40 小时的发布与素材制作？
+> 正文：我们是“1人AI军团”的外包小队，已为【同行/竞品】做过【成果】。固定价套餐（无需雇人）：S‑09 发布说明、S‑03 素材包、S‑07 竞品监控。可发一份 48 小时样稿给您评估吗？
+
+**FAQ（节选）**
+
+* Q：你们会不会把同一内容卖多人？A：每个客户交付均**唯一定制**，但底层模板与脚本会复用（见 SOW 的 IP 条款与模板许可）。
+* Q：数据安全？A：最小必要、去标识化、90 天日志与可导出审计；可签 DPA/NDA。
+* Q：可以月付/年付？A：可，年付 ‑10%。
+
+## B7. Ops Rhythm / 运营节奏
+
+* 固定交付日：S‑01(每周一)、S‑03(每月5日)、S‑07(每月25日)、S‑08(每月1日)、S‑13(每月15日)。
+* 每周：周二 2h HITL 审核会；周五汇总 SLA 报告。
+
+## B8. Upsell/Cross‑sell / 加售矩阵
+
+* 购买 S‑03 → 推荐 S‑01（内容配合）
+* 购买 S‑08 → 推荐 S‑07（口碑与竞品监控）
+* 购买任意 SKU → 推荐 S‑13（AI 审核），或 B‑ENTRY → B‑PRO 升级
+
+## B9. Template Reuse & License Clause / 模板复用与许可
+
+在 SOW 的 IP 条款中加入：**交付成果版权归客户所有**；但供应商保留**通用模板、提示词、脚本、工作流**的所有权与复用权（不含客户机密数据）。
+
+## B10. BOM & Margin Guardrails / 成本与毛利护栏
+
+* 目标：单 SKU **毛利 ≥ 65%**；模型推理+抓取+存储 ≦ 20% 收入；返工时间 ≦ 15%。
+* 若连续 2 周超过护栏：
+
+  1. 降复杂度（减少范围/频次）；
+  2. 调价 +10–20%；
+  3. 或暂停接单，优化模板后再开售。
+
+—— End Annex B ——
+
+---
+
+# Annex C — One‑Page Landing Copy (Per‑SKU) / 单页落地页文案（精简模板）
+
+> 复制替换 `{}` 占位。
+
+**Hero**：Your outsourced AI squad with a human general. 固定价、可追溯、可签约。
+
+**Value bullets**：更快发布｜合规素材｜可审计来源｜可订阅。
+
+**SKU 亮点**：
+
+* **S‑09 Release Notes & Docs** — 48 小时出首稿；API 参考 + 用户指南；工程师节省 40h/月。
+* **S‑03 Social Creative Pack** — 30 张视觉 + 10 条脚本；商业可用许可台账随包附送。
+* **S‑07 Competitor Monitor** — 舆情&竞品每月 25 日汇总；误报 ≤5%。
+
+**价格卡**：按 Annex B 表格展示；年付 ‑10%。
+
+**证据**：展示 1 个前后对比；提供交付包 ZIP 下载样例。
+
+**FAQ & 合规**：引用 SOW/Clause Bank 核心条款（AI 使用披露、幻觉免责声明、数据留存 90 天）。
+
+**CTA**：
+
+* 立即订阅（Stripe Checkout）
+* 领取 48 小时样稿（表单：行业/主题/邮箱）
+
+—— End Annex C ——
+
