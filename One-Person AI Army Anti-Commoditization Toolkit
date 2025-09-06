@@ -1,0 +1,284 @@
+One-Person AI Army Anti-Commoditization Toolkit (一人AI军团反同质化工具包)
+This toolkit implements the 90-day anti-commoditization roadmap for a one-person AI Army, enhancing the existing Replit + Supabase setup with: (1) an evaluation/audit export tool, (2) multi-jurisdiction terms switching, and (3) a white-label partner program page. It integrates with the prior "cruise model" (Itin-A/B/C, e-commerce focus) and strengthens the Moat Stack (compliance, delivery standards, network effects). All components are designed for immediate deployment, ensuring clients prefer subscription over DIY due to lower TCO, compliance, and scalability.
+
+1. Evaluation/Audit Export Tool (评测/审计导出工具)
+Purpose: Provide a one-click export of audit logs, terms agreement records, and delivery manifests as a ZIP, ensuring compliance and trust. This reinforces Moat Stack layers 1 (Compliance), 2 (Delivery Standards), and 10 (Observability).
+Implementation (Supabase + Replit):
+-- Audit Logs: Tracks task execution, human sign-offs, and compliance
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  voyage_id UUID REFERENCES voyages(id),
+  booking_id UUID REFERENCES bookings(id),
+  task_id VARCHAR(50) NOT NULL, -- e.g., Listing_Draft, Report_Gen
+  prompt TEXT, -- AI prompt used
+  model_version VARCHAR(50), -- e.g., gpt-4o-2025-09
+  input_data_fingerprint VARCHAR(64), -- SHA256 hash of input
+  output_summary TEXT, -- Summary of AI output
+  human_signoff JSONB, -- { "reviewer": "Human Commander", "timestamp": "2025-09-05T21:37:00Z" }
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Terms Agreements: Tracks client consent
+CREATE TABLE terms_agreements (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  booking_id UUID REFERENCES bookings(id),
+  terms_version VARCHAR(20) NOT NULL, -- e.g., v1.0.0-EN
+  ip_address VARCHAR(45), -- Client IP
+  user_agent TEXT, -- Browser UA
+  consent_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Delivery Manifests: Tracks delivery package contents
+CREATE TABLE delivery_manifests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  voyage_id UUID REFERENCES voyages(id),
+  booking_id UUID REFERENCES bookings(id),
+  files JSONB, -- { "Listings.csv": "sha256:abc123", "Report.pdf": "sha256:def456" }
+  sources JSONB, -- { "url": "example.com", "timestamp": "2025-09-05" }
+  licenses TEXT, -- License details
+  changelog TEXT, -- Changelog entries
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Export Endpoint (Node.js on Replit):
+const { createClient } = require('@supabase/supabase-js');
+const express = require('express');
+const archiver = require('archiver');
+const app = express();
+
+const supabase = createClient('[SUPABASE_URL]', '[SUPABASE_KEY]');
+
+app.get('/audit-export/:booking_id', async (req, res) => {
+  const { booking_id } = req.params;
+  const archive = archiver('zip');
+
+  // Fetch audit data
+  const { data: logs } = await supabase.from('audit_logs').select('*').eq('booking_id', booking_id);
+  const { data: terms } = await supabase.from('terms_agreements').select('*').eq('booking_id', booking_id);
+  const { data: manifest } = await supabase.from('delivery_manifests').select('*').eq('booking_id', booking_id);
+
+  // Create ZIP
+  archive.append(JSON.stringify(logs, null, 2), { name: 'audit_logs.json' });
+  archive.append(JSON.stringify(terms, null, 2), { name: 'terms_agreements.json' });
+  archive.append(JSON.stringify(manifest, null, 2), { name: 'delivery_manifest.json' });
+  
+  // Add delivery files (e.g., Listings.csv, Report.pdf)
+  for (const m of manifest) {
+    for (const [file, hash] of Object.entries(m.files)) {
+      const { data } = await supabase.storage.from('deliverables').download(file);
+      archive.append(data, { name: file });
+    }
+  }
+
+  res.setHeader('Content-Type', 'application/zip');
+  res.setHeader('Content-Disposition', `attachment; filename=audit_${booking_id}.zip`);
+  archive.pipe(res);
+  archive.finalize();
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+Instructions: Deploy on Replit, add endpoint to client portal (/audit-export/[BOOKING_ID]). Clients download a ZIP with logs, terms consent, manifests, and deliverables. Retain data for 90 days per compliance policy.
+
+2. Multi-Jurisdiction Terms Switching (法域切换)
+Purpose: Support EN/Chinese/NA/EU terms with versioned consent tracking, reducing legal friction (Moat Stack layer 1). Includes EU DPA skeleton for GDPR compliance.
+Terms JSON (Supabase Storage: terms/terms.json):
+{
+  "versions": [
+    {
+      "id": "v1.0.0-EN",
+      "region": "Global",
+      "language": "English",
+      "content": {
+        "tos": "Terms of Service: AI-generated drafts, human-reviewed, liability capped at contract value.",
+        "msa": "Master Service Agreement: Ownership transfers post-payment, data desensitized.",
+        "dpa": "Data Processing Agreement: 90-day retention, audit logs provided.",
+        "sla": "Service Level Agreement: 24h response, 2 revisions, 7-day fact-correction."
+      }
+    },
+    {
+      "id": "v1.0.0-ZH",
+      "region": "Global",
+      "language": "Chinese",
+      "content": {
+        "tos": "服务条款：AI生成草案，人工复核，责任上限为合同价值。",
+        "msa": "主服务协议：支付后权属转让，数据脱敏。",
+        "dpa": "数据处理协议：90天保留，提供审计日志。",
+        "sla": "服务级别协议：24小时响应，2次修订，7天事实纠错。"
+      }
+    },
+    {
+      "id": "v1.0.0-EU",
+      "region": "EU",
+      "language": "English",
+      "content": {
+        "tos": "As above, with GDPR compliance.",
+        "msa": "As above, with EU data residency.",
+        "dpa": "Data Processing Agreement: Data minimization, right to erasure, DPO contact: [YOUR_EMAIL].",
+        "sla": "As above, with EU audit rights."
+      }
+    }
+  ]
+}
+
+Front-End Terms Switcher (Replit):
+<select id="terms-region" onchange="loadTerms()">
+  <option value="v1.0.0-EN">Global (English)</option>
+  <option value="v1.0.0-ZH">Global (Chinese)</option>
+  <option value="v1.0.0-EU">EU (GDPR)</option>
+</select>
+<div id="terms-content"></div>
+<button onclick="agreeTerms()">I Agree</button>
+
+<script>
+async function loadTerms() {
+  const region = document.getElementById('terms-region').value;
+  const { data } = await supabase.storage.from('terms').download('terms.json');
+  const terms = JSON.parse(await data.text()).versions.find(v => v.id === region);
+  document.getElementById('terms-content').innerHTML = `
+    <h3>Terms</h3>
+    <p>TOS: ${terms.content.tos}</p>
+    <p>MSA: ${terms.content.msa}</p>
+    <p>DPA: ${terms.content.dpa}</p>
+    <p>SLA: ${terms.content.sla}</p>
+  `;
+}
+
+async function agreeTerms() {
+  const region = document.getElementById('terms-region').value;
+  const { data, error } = await supabase.from('terms_agreements').insert({
+    booking_id: '[BOOKING_ID]',
+    terms_version: region,
+    ip_address: await (await fetch('https://api.ipify.org?format=json')).json().ip,
+    user_agent: navigator.userAgent,
+    consent_timestamp: new Date().toISOString()
+  });
+  alert(error ? 'Error saving consent' : 'Terms agreed');
+}
+</script>
+
+EU DPA Skeleton (Supabase Storage: terms/dpa_eu.tex):
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+\section*{Data Processing Agreement (DPA) - EU}
+\textbf{Parties:} [Your Company Name] (Processor), [Client Name] (Controller). \\
+\textbf{Scope:} Processing of personal data for [Itin-C: E-com Cruise] services. \\
+\textbf{Obligations:}
+\begin{itemize}
+  \item Data minimization: Only necessary data processed.
+  \item Retention: 90 days, with right to erasure.
+  \item Audit: Logs available via /audit-export/[BOOKING_ID].
+  \item Sub-processors: [List AI providers, e.g., OpenAI], disclosed in MSA.
+  \item DPO: [Your Email].
+\end{itemize}
+\textbf{Law:} GDPR (EU) 2016/679. \\
+\textbf{Signatures:} Processor: ____________________ | Controller: ____________________
+
+\end{document}
+
+Instructions: Upload terms.json and dpa_eu.tex to Supabase Storage. Add switcher to Replit landing page. Log consents in terms_agreements. Generate PDF for EU clients using LaTeXmk.
+
+3. White-Label Partner Program Page (白标伙伴计划页)
+Purpose: Enable partners to resell voyages under their brand, creating network effects (Moat Stack layer 6).
+Page Structure (Replit):
+<!DOCTYPE html>
+<html>
+<head>
+  <title>[Your Company Name] - Partner Program</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-blue-600 text-white p-4">
+    <h1 class="text-3xl">Partner with Your AI Squad</h1>
+    <p>Resell our AI-powered voyages under your brand.</p>
+  </header>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Partner Benefits</h2>
+    <ul class="list-disc pl-6">
+      <li>White-label: Sell as your own, we handle delivery.</li>
+      <li>Revenue Share: Tier 1 (10% commission), Tier 2 (20% for 5+ bookings/month).</li>
+      <li>Support: Co-branded landing pages, dedicated Slack.</li>
+      <li>Compliance: Pre-vetted terms, audit exports.</li>
+    </ul>
+  </section>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Available Voyages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="border p-4">
+        <h3>Growth Cruise</h3>
+        <p>Weekly Reports, Social Assets, Monitoring</p>
+        <p>Price: $499-$3,999</p>
+      </div>
+      <div class="border p-4">
+        <h3>Launch Cruise</h3>
+        <p>R&D Docs, Weekly Reports</p>
+        <p>Price: $499-$3,999</p>
+      </div>
+      <div class="border p-4">
+        <h3>E-com Cruise</h3>
+        <p>Listings, Insights, Monitoring</p>
+        <p>Price: $649-$3,999</p>
+      </div>
+    </div>
+  </section>
+  <section class="p-6">
+    <h2 class="text-2xl mb-4">Partner Coupon</h2>
+    <p>Offer clients 10% off first voyage with code: <strong>[PARTNER_CODE]</strong></p>
+    <a href="[REPLIT_URL]/partner-signup" class="bg-blue-500 text-white p-2">Join Now</a>
+  </section>
+</body>
+</html>
+
+Supabase Partner Table:
+CREATE TABLE partners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  partner_name VARCHAR(100) NOT NULL,
+  tier VARCHAR(20) NOT NULL, -- Tier1 (10%), Tier2 (20%)
+  coupon_code VARCHAR(20) UNIQUE NOT NULL,
+  bookings_count INTEGER DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Instructions: Deploy page on Replit. Generate unique [PARTNER_CODE] in Stripe (e.g., 10% off first voyage). Track bookings in partners table, update bookings_count for tier upgrades. Provide partners with co-branded assets via [REPLIT_URL]/partner-assets.
+
+4. Template Update Cadence (模板更新节拍)
+Purpose: Reinforce Moat Stack layer 7 (Template Flywheel) with predictable updates, visible to clients.
+Schedule:  
+
+Day 1 of Month: Release new vertical templates (e.g., e-commerce listing variants, competitor report formats).  
+Day 15 of Month: Publish versioned changelog and regression test results (accuracy, latency).
+
+Changelog Example (Supabase Storage: templates/changelog.md):
+# Template Changelog
+## 2025-10-01
+- Added: E-com Listing Template v2.1 (optimized for Amazon A9 algorithm).
+- Improved: Competitor Report accuracy (+5% via new OSINT sources).
+- Regression: 98% pass rate on benchmark set (10 listings, 5 reports).
+
+Instructions: Store templates in Supabase Storage (templates/). Notify clients via email with changelog and regression dashboard link.
+
+5. Key Metrics and North Star (指标与北极星)
+
+TTFV (Time-to-First-Value): < 1 day (from booking to first deliverable).  
+Repurchase Rate: ≥30% (clients renewing voyages).  
+Ancillary Penetration: ≥30% (add-on purchases).  
+Compliance Resistance: <5% (legal pushback rate).  
+Rework Rate: ≤15% (deliverable revisions).  
+North Star: Client subscription lifetime > 6 months, driven by template upgrades and compliance trust.
+
+
+Customization Notes (定制说明)
+
+Itinerary Swap: Update voyages.itinerary_id in Supabase for Itin-D or others.  
+JIN Settlement: Add [JIN_SETTLEMENT_TERMS] to bookings payment notes.  
+Replit: Host audit export, terms switcher, and partner page at [REPLIT_URL].  
+Next Steps:  
+Deploy Supabase schema updates (audit_logs, terms_agreements, delivery_manifests, partners).  
+Add audit export and terms switcher to Replit client portal.  
+Launch partner program with 2-3 pilot partners, track via partners table.
+
+
